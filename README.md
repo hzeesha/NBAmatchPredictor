@@ -10,16 +10,16 @@
 
 ## Installation
 1. **Clone the repository**
-2. **Set up the Python environment**
+3. **Set up the Python environment**
    - Install Python 3.8 or later
-   - Install required dependencies: pip install -r requirements.txt
-3. **Set up data directories**
+   - Install required dependencies (bash): pip install -r requirements.txt
+4. **Set up data directories**
    - Ensure that the following directory structure exists:
      data2/
      ├── standings/
      └── scores/
-4. **Optional Playwright Setup**
-   - If using Playwright for the first time, run: playwright install
+5. **Optional Playwright Setup**
+   - If using Playwright for the first time, run (bash): playwright install
 
 ## Usage
 - Run main.py to scrape standings and game data 
