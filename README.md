@@ -24,7 +24,9 @@
      ├── standings/
      └── scores/
 5. **Optional Playwright Setup**
-   - If using Playwright for the first time, run (bash): playwright install
+   - If using Playwright for the first time, run
+     ```bash
+     playwright install
 
 ## Usage
 - Run main.py to scrape standings and game data 
