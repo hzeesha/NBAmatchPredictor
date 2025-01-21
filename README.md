@@ -2,6 +2,9 @@
 
 ## NBA game outcome predictor: scrapes box scores from Basketball Reference, compiles them, adds rolling averages, trains a Ridge classifier, then offers a CLI to predict winners. 
 
+## CLI Example:
+![image](https://github.com/user-attachments/assets/6398daa0-a546-4a93-b751-f83a96669b38)
+
 ## Features
 - **Data Scraping**: Uses Playwright and BeautifulSoup to scrape data from Basketball Reference.
 - **Data Parsing**: Extracts game statistics and processes them into structured CSV files.
