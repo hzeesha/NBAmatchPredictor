@@ -15,7 +15,9 @@
 1. **Clone the repository**
 3. **Set up the Python environment**
    - Install Python 3.8 or later
-   - Install required dependencies (bash): pip install -r requirements.txt
+   - Install required dependencies
+     ```bash
+     pip install -r requirements.txt
 4. **Set up data directories**
    - Ensure that the following directory structure exists:
      data2/
