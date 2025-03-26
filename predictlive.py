@@ -8,7 +8,7 @@ from sklearn.linear_model import RidgeClassifier
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score
 
-# LOAD & BASIC CLEANUP
+# Load and basic cleanup
 df = pd.read_csv("nba_games.csv", index_col=0)
 df = df.sort_values("date").reset_index(drop=True)
 
@@ -26,7 +26,7 @@ for col in ["ft%", "ft%_max", "+/-_max", "ft%_opp", "ft%_max_opp", "+/-_max_opp"
     if col in df.columns:
         df = df.dropna(subset=[col])
 
-# (Optional) remove columns that are entirely NaN
+# remove columns that are entirely NaN
 nulls = df.isnull().sum()
 nulls = nulls[nulls > 0]  # columns with missing values
 valid_columns = df.columns[~df.columns.isin(nulls.index)]
@@ -67,7 +67,7 @@ preds_basic = preds_basic[preds_basic["actual"] != 2]
 basic_acc = accuracy_score(preds_basic["actual"], preds_basic["prediction"])
 print("Basic model accuracy:", basic_acc)
 
-# ADD ROLLING FEATURES
+# Add rolling features
 desired_columns = [
     "won", "team", "season", "ftr", "trb%", "usg%", "fg%_max",
     "3pa_max", "orb_max", "pf_max", "orb%_max", "stl%_max",
@@ -103,7 +103,7 @@ else:
 
 df = df.dropna()
 
-# SHIFT & MERGE OPPONENT STATS
+# Shift and merge opponent stats
 def shift_col(subdf, col):
     return subdf[col].shift(-1)
 
@@ -122,7 +122,6 @@ df = pd.concat([df, next_cols_df], axis=1).copy()
 all_opp_merge_cols = rolling_cols + ["team_opp_next", "date_next", "team"]
 all_opp_merge_cols = [c for c in all_opp_merge_cols if c in df.columns]
 
-# NOTE: We specify suffixes=('', '_opp') so that the left side keeps "team"
 final_data = df.merge(
     df[all_opp_merge_cols],
     left_on=["team", "date_next"],
@@ -134,7 +133,7 @@ final_data = df.merge(
 # DROP ANY REMAINING NaNs BEFORE SFS
 final_data = final_data.dropna().copy()
 
-# FINAL MODEL TRAINING
+# Final model training
 removed_cols_final = ["season", "date", "won", "target", "team", "team_opp"]
 # Also remove any object columns
 removed_cols_final += list(final_data.select_dtypes(include=["object"]).columns)
