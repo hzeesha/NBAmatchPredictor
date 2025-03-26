@@ -8,9 +8,7 @@ from sklearn.linear_model import RidgeClassifier
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score
 
-########################################
-# 1) LOAD & BASIC CLEANUP
-########################################
+# LOAD & BASIC CLEANUP
 df = pd.read_csv("nba_games.csv", index_col=0)
 df = df.sort_values("date").reset_index(drop=True)
 
@@ -34,9 +32,7 @@ nulls = nulls[nulls > 0]  # columns with missing values
 valid_columns = df.columns[~df.columns.isin(nulls.index)]
 df = df[valid_columns].copy()
 
-########################################
-# 2) BASIC MODEL (No Rolling Yet)
-########################################
+# BASIC MODEL (No Rolling Yet)
 removed_cols_basic = ["season", "date", "won", "target", "team", "team_opp"]
 basic_features = df.columns[~df.columns.isin(removed_cols_basic)]
 
@@ -71,9 +67,7 @@ preds_basic = preds_basic[preds_basic["actual"] != 2]
 basic_acc = accuracy_score(preds_basic["actual"], preds_basic["prediction"])
 print("Basic model accuracy:", basic_acc)
 
-########################################
-# 3) ADD ROLLING FEATURES
-########################################
+# ADD ROLLING FEATURES
 desired_columns = [
     "won", "team", "season", "ftr", "trb%", "usg%", "fg%_max",
     "3pa_max", "orb_max", "pf_max", "orb%_max", "stl%_max",
@@ -109,9 +103,7 @@ else:
 
 df = df.dropna()
 
-########################################
-# 4) SHIFT & MERGE OPPONENT STATS
-########################################
+# SHIFT & MERGE OPPONENT STATS
 def shift_col(subdf, col):
     return subdf[col].shift(-1)
 
@@ -139,14 +131,10 @@ final_data = df.merge(
     suffixes=('', '_opp')
 )
 
-########################################
-# 5) DROP ANY REMAINING NaNs BEFORE SFS
-########################################
+# DROP ANY REMAINING NaNs BEFORE SFS
 final_data = final_data.dropna().copy()
 
-########################################
-# 6) FINAL MODEL TRAINING
-########################################
+# FINAL MODEL TRAINING
 removed_cols_final = ["season", "date", "won", "target", "team", "team_opp"]
 # Also remove any object columns
 removed_cols_final += list(final_data.select_dtypes(include=["object"]).columns)
@@ -165,9 +153,7 @@ final_acc = accuracy_score(predictions_final["actual"], predictions_final["predi
 print("Final model accuracy:", final_acc)
 print("Final predictors:", predictors_final)
 
-########################################
-# 7) SAVE THE FINAL DF & MODEL
-########################################
+# SAVE THE FINAL DF & MODEL
 # Save to final_data.csv
 final_data.to_csv("final_data.csv", index=False)
 print("Saved final DataFrame to 'final_data.csv' with shape:", final_data.shape)
