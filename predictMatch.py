@@ -1,18 +1,13 @@
 import joblib
 import pandas as pd
 
-##########################
-# 1) LOAD FINAL DATA & MODEL
-##########################
+# Load final data and model
 full = pd.read_csv("final_data.csv")
 
 model = joblib.load("ridge_model.pkl")
 predictors = joblib.load("predictors.pkl")
 
-##########################
-# 2) HELPER FUNCTIONS
-##########################
-
+# Helper functions
 def get_latest_team_features(full_df, team_abbrev):
     """
     Return the most recent row for `team_abbrev` from 'full_df'.
@@ -87,9 +82,7 @@ def predict_winner(team1, team2, home_team=1):
         print(f"The model predicts {team1} will LOSE to {team2}.")
 
 
-##########################
-# 3) MAIN CLI
-##########################
+# Main CLI
 def main():
     # Prompt user for the teams
     print("Enter team abbreviations as they appear in your data (e.g. 'LAL', 'BOS', 'GSW'):")
